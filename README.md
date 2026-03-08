@@ -11,8 +11,11 @@ Run the example program in the terminal:
 
 ```bash
 node example/example.js
+```
+
 Example of using generator only:
 
+```bash
 const lib = require('../src');
 
 const gen1 = lib.generator();
@@ -20,9 +23,11 @@ console.log("Generator:");
 console.log(gen1.next().value);
 console.log(gen1.next().value);
 console.log(gen1.next().value);
+```
 
 Example of using iterator:
 
+```bash
 console.log("Iterator:");
 const gen2 = lib.generator();
 const timeInSeconds = 10;
