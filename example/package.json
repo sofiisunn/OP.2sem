@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Project OP",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "lab2-op": "file:../lib"
   },
-  "keywords": [],
   "author": "Sofiia Openko",
   "license": "ISC"
 }

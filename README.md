@@ -16,7 +16,7 @@ node example/example.js
 Example of using generator only:
 
 ```bash
-const lib = require('../src');
+const lib = require('lab2-op');
 
 const gen1 = lib.generator();
 console.log("Generator:");

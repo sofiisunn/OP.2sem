@@ -1,6 +1,6 @@
 'use strict';
 
-const lib = require('../src');
+const lib = require('lab2-op');
 
 const gen1 = lib.generator();
 console.log("Generator:");
