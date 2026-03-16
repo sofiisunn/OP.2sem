@@ -2,15 +2,15 @@
 
 const lib = require('lab2-op');
 
-const gen1 = lib.generator();
-console.log("Generator:");
-console.log(gen1.next().value);
-console.log(gen1.next().value);
-console.log(gen1.next().value);
+const gen = lib.generator();
+const tasks = [];
 
-console.log("Iterator:");
-const gen2 = lib.generator();
-const timeInSeconds = 10;
-const time = timeInSeconds * 1000;
+for(let i = 0; i < 10; i++) {
+    const value = gen.next().value;
+    const task = new lib.Task(value.taskId, "Task " + value.taskId, value.color);
+    tasks.push(task);
+}
 
-lib.iterator(gen2, time);
+for(const task of tasks) {
+    console.log(task);
+}
