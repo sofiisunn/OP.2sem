@@ -17,3 +17,12 @@ for(let i = 0; i < 10; i++) {
 for(const task of tasks) {
     console.log(task.taskId, task.title, task.color, task.status, task.createdAt, task.priority);
 }
+
+
+function sum(a, b) {
+    console.log("Обчислення суми " + a + " та " + b);
+    return a + b;
+} 
+const memoSum = lib.memoize(sum);
+console.log(memoSum(2, 3));
+console.log(memoSum(3, 4));
