@@ -20,9 +20,9 @@ for(const task of tasks) {
 
 
 function sum(a, b) {
-    console.log("Обчислення суми " + a + " та " + b);
+    console.log("Обчислення суми..."); 
     return a + b;
 } 
 const memoSum = lib.memoize(sum);
 console.log(memoSum(2, 3));
-console.log(memoSum(3, 4));
+console.log(memoSum(2, 3));
