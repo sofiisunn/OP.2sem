@@ -23,6 +23,10 @@ function sum(a, b) {
     console.log("Обчислення суми..."); 
     return a + b;
 } 
-const memoSum = lib.memoize(sum);
-console.log(memoSum(2, 3));
-console.log(memoSum(2, 3));
+const memoSum = lib.memoize(sum, 2);
+console.log(memoSum(1,2)); 
+console.log(memoSum(2,3)); 
+console.log(memoSum(1,2)); 
+console.log(memoSum(4,5)); 
+console.log(memoSum(2,3));
+console.log(memoSum(1,2)); 
