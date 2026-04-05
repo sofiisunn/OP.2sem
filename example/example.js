@@ -34,3 +34,14 @@ setTimeout(() => {
     console.log("TTL: ");
     console.log(memoSum(1, 2));
 }, 4000);
+
+const PriorityQueue = lib.PriorityQueue;
+const pq = new PriorityQueue();
+pq.enqueue("Task 1", "1");
+pq.enqueue("Task 2", "3");
+pq.enqueue("Task 3", "2");
+console.log("Priority Map:");
+console.log(pq.priorityMap);
+console.log("Order:");
+console.log(pq.order);
+
