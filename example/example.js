@@ -44,4 +44,13 @@ console.log("Priority Map:");
 console.log(pq.priorityMap);
 console.log("Order:");
 console.log(pq.order);
+console.log("Peek highest priority:");
+console.log(pq.peek("highest"));
+console.log("Peek lowest priority:");
+console.log(pq.peek("lowest"));
+console.log("Peek oldest:");
+console.log(pq.peek("oldest"));
+console.log("Peek newest:");
+console.log(pq.peek("newest"));
+
 
