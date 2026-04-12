@@ -38,8 +38,9 @@ setTimeout(() => {
 const PriorityQueue = lib.PriorityQueue;
 const pq = new PriorityQueue();
 pq.enqueue("Task 1", "1");
-pq.enqueue("Task 2", "3");
+pq.enqueue("Task 2", "4");
 pq.enqueue("Task 3", "2");
+pq.enqueue("Task 4", "3");
 console.log("Priority Map:");
 console.log(pq.priorityMap);
 console.log("Order:");
