@@ -1,0 +1,10 @@
+{
+  "name": "lab2-op",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "node example/example.js"
+  },
+  "author": "Sofiia Openko",
+  "license": "ISC"
+}
