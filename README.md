@@ -1,8 +1,8 @@
 # OP Project
 ## Description 
-This task demonstrates the use of a generator and an iterator to generate tasks with different colors
+Project 2 sem
 ## Project structure
-src/ - source code;
+lib/ - core library implementation
 example/ - example of using;
 package.json - project configuration;
 README.md - project documentation
@@ -11,29 +11,6 @@ Run the example program in the terminal:
 
 ```bash
 node example/example.js
-```
-
-Example of using generator only:
-
-```bash
-const lib = require('lab2-op');
-
-const gen1 = lib.generator();
-console.log("Generator:");
-console.log(gen1.next().value);
-console.log(gen1.next().value);
-console.log(gen1.next().value);
-```
-
-Example of using iterator:
-
-```bash
-console.log("Iterator:");
-const gen2 = lib.generator();
-const timeInSeconds = 10;
-const time = timeInSeconds * 1000;
-
-lib.iterator(gen2, time);
 ```
 
 ## Author
