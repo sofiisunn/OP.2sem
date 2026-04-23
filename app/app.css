@@ -1,4 +1,73 @@
+body {
+    margin: 0;
+    font-family: 'Lexend', sans-serif;
+    background-color: #fff0f5; 
+    background-image: radial-gradient(#d3d3d3 1px, transparent 1px);
+    background-size: 20px 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+} 
+
+.main-title {
+    font-size: 60px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: #ffb7b2; 
+    -webkit-text-stroke: 2px #000;
+    text-shadow: 4px 4px 0px #000;
+    text-align: center;
+    margin-bottom: 20px;
+    transform: rotate(-2deg);
+}
+
+.input {
+    display: flex;
+    border: 3px solid #000;      
+    border-radius: 12px;         
+    overflow: hidden;            
+    box-shadow: 5px 5px 0px #000; 
+    margin-bottom: 30px;
+    height: 50px; 
+    width: 100%;  
+    max-width: 400px; 
+    padding: 0;  
+}
+
+#inputTask {
+    border: none;          
+    flex-grow: 1;          
+    padding: 0 15px;         
+    font-family: inherit;  
+    font-size: 16px;
+    outline: none;         
+    background: #fff;
+    height: 100%;      
+}
+
+#addButton {
+    border: none;
+    border-left: 3px solid #000; 
+    background-color: #f8bbd0;   
+    padding: 0 25px;             
+    font-weight: bold;           
+    font-family: inherit;
+    cursor: pointer;             
+    height: 100%; 
+    margin: 0;     
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#addButton:hover {
+    background-color: #f48fb1;   
+}
+
 .done {
     text-decoration: line-through;
     color: gray;
-}
+} 
