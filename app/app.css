@@ -90,11 +90,18 @@ li {
     padding: 15px 20px;
     margin-bottom: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
 
+li span {
+    flex-grow: 1;         
+    text-align: left;      
+    word-break: break-all; 
+}
+
 li button {
+    margin-left: auto;
     width: 30px;
     height: 30px;
     background-color: #f8bbd0;
@@ -107,13 +114,47 @@ li button {
     font-weight: bold;
     font-size: 20px;
     box-shadow: 2px 2px 0px #000;
+    flex-shrink: 0;
 }
 
 li button:hover {
     background-color: #f48fb1;
 }
 
-.done {
+.task-check {
+    appearance: none; 
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #000;
+    border-radius: 50%; 
+    cursor: pointer;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.task-check:checked {
+    background-color: #a2d2ff; /* Колір заповнення як на скріншоті */
+}
+
+.task-check:checked::after {
+    content: '✓';
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+}
+
+li.done {
+    background-color: #e0f2f1; 
+    opacity: 0.8;
+}
+
+li.done span {
     text-decoration: line-through;
-    color: gray;
-} 
+    color: #888;
+}
