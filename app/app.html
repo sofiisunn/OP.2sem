@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>TO DO APP</title>
+    <title>TO DO LIST ONLINE</title>
     <link rel="stylesheet" href="app.css">
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -12,9 +12,14 @@
     <input id = "inputTask" placeholder = "Введіть задачу...">
     <button id = "addButton">Додати</button>
     </div>
-    <ul>
+    <div class = "card">
+        <ul id = "taskList">
 
-    </ul>
+        </ul>
+        <div class = "card-footer">
+            <span id = "taskCount">0 задач</span>
+        </div>
+    </div>
     <script src="app.js"></script>
 
 </body>

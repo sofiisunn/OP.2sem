@@ -1,6 +1,7 @@
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
 const list = document.querySelector('ul');
+
 function addTask() {
     const task = input.value;
     if (task.trim() === '') return;
@@ -13,7 +14,7 @@ function addTask() {
         li.classList.toggle('done');
     })
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Видалити завдання';
+    deleteButton.textContent = '\u00D7';
     deleteButton.addEventListener('click', () => {
         li.remove();
     })
@@ -21,11 +22,17 @@ function addTask() {
     list.appendChild(li);
     input.value = '';
 }
+
 button.addEventListener('click', () => {
     addTask();
 });
+
 input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         addTask();
     }
 });
+
+function updateTaskCount() {
+
+}
