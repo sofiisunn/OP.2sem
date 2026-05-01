@@ -1,3 +1,5 @@
+'use strict';
+
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
 const list = document.querySelector('ul');
