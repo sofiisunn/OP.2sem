@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>TO DO LIST ONLINE</title>
@@ -7,20 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1 class = "main-title">TO DO LIST</h1>
+    <h1 class="main-title">TO DO LIST</h1>
+    
     <div class="input">
-    <input id = "inputTask" placeholder = "Введіть задачу...">
-    <button id = "addButton">Додати</button>
+        <input id="inputTask" placeholder="Введіть задачу...">
+        <button id="addButton">Додати</button>
+        <button id="exampleButton">Побачити приклади задач</button>
     </div>
-    <div class = "card">
-        <ul id = "taskList">
 
-        </ul>
-        <div class = "card-footer">
-            <span id = "taskCount">0 задач</span>
+    <div class="card">
+        <ul id="taskList"></ul>
+        <div class="card-footer">
+            <span id="taskCount">0 задач</span>
         </div>
     </div>
-    <script src="app.js"></script>
 
+    <div id="overlay" class="hidden"></div>
+    <div id="previewPanel" class="hidden">
+        <ul id="previewList"></ul>
+        <button id="addSelected">Додати вибране завдання</button>
+    </div>
+
+    <script src="bundle.js"></script>
 </body>
 </html>
