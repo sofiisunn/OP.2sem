@@ -10,8 +10,10 @@ README.md - project documentation
 Run the example program in the terminal:
 
 ```bash
-node example/example.js
+npx serve .
 ```
+follow the link:
+http://localhost:3000/app/app.html
 
 ## Author
 Sofiia Openko 
