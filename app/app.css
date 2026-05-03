@@ -85,6 +85,7 @@ ul{
 li {
     background: #fff5f7;
     border: 2px solid #000;
+    border-left: 6px solid transparent;
     border-radius: 8px;
     box-shadow: 4px 4px 0px #000;
     padding: 15px 20px;
@@ -245,4 +246,16 @@ li.done span {
 
 .hidden {
     display: none !important;
+}
+
+.priority-1 {
+    border-left: 6px solid #ffd6e7;
+}
+
+.priority-2 {
+    border-left: 6px solid #ff9ecb;
+}
+
+.priority-3 {
+    border-left: 6px solid #ff5c8a;
 }

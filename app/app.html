@@ -15,6 +15,27 @@
         <button id="exampleButton">Побачити приклади задач</button>
     </div>
 
+    <div class="selectPriority">
+        <label for="priority">Пріоритет для задачі:</label>
+        <select id="priority">
+        <option value="1">1 (низький)</option>
+        <option value="2">2 (середній)</option>
+        <option value="3">3 (високий)</option>
+        </select>
+    </div>
+
+    <div class="filter">
+    <label for="filter">Фільтр задач:</label>
+    <select id="filter">
+        <option value="all">Усі задачі</option>
+        <option value="done">Виконані</option>
+        <option value="active">Невиконані</option>
+        <option value="1">Низький пріоритет</option>
+        <option value="2">Середній пріоритет</option>
+        <option value="3">Високий пріоритет</option>
+    </select>
+    </div>
+
     <div class="card">
         <ul id="taskList"></ul>
         <div class="card-footer">
