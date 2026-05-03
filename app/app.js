@@ -14,6 +14,8 @@ const list = document.getElementById('taskList');
 const addSelected = document.getElementById('addSelected');
 const taskCount = document.getElementById('taskCount');
 const filter = document.getElementById('filter');
+const filterButtons = document.querySelectorAll('.filter-btn');
+let currentFilter = 'all';
 
 let selectedTask = null;
 let id = 1;
@@ -110,4 +112,12 @@ addSelected.addEventListener('click', () => {
 overlay.addEventListener('click', () => {
     previewPanel.classList.add('hidden');
     overlay.classList.add('hidden');
+});
+
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+    });
 });

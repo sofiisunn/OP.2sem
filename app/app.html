@@ -25,15 +25,13 @@
     </div>
 
     <div class="filter">
-    <label for="filter">Фільтр задач:</label>
-    <select id="filter">
-        <option value="all">Усі задачі</option>
-        <option value="done">Виконані</option>
-        <option value="active">Невиконані</option>
-        <option value="1">Низький пріоритет</option>
-        <option value="2">Середній пріоритет</option>
-        <option value="3">Високий пріоритет</option>
-    </select>
+    <button class="filter-btn active" data-filter="all">Усі</button>
+    <button class="filter-btn" data-filter="active">Активні</button>
+    <button class="filter-btn" data-filter="done">Виконані</button>
+
+    <button class="filter-btn" data-filter="1">Низький пріоритет</button>
+    <button class="filter-btn" data-filter="2">Середній пріоритет</button>
+    <button class="filter-btn" data-filter="3">Високий пріоритет</button>
     </div>
 
     <div class="card">

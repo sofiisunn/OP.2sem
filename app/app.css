@@ -259,3 +259,66 @@ li.done span {
 .priority-3 {
     border-left: 6px solid #ff5c8a;
 }
+
+.selectPriority {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+select {
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 2px solid #f8c8dc;
+    background-color: #fff0f5;
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    color: #5a4a4a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+select:hover {
+    border-color: #ff9bb3;
+}
+
+select:focus {
+    outline: none;
+    border-color: #ff6f91;
+    box-shadow: 0 0 5px #ffd1dc;
+}
+
+label {
+    color: #a35c7a;
+    font-weight: 500;
+}
+
+.filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.filter-btn {
+    padding: 8px 12px;
+    border: 2px solid #000;
+    border-radius: 20px;
+    background: #fff0f5;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    box-shadow: 2px 2px 0px #000;
+    transition: 0.2s;
+}
+
+.filter-btn:hover {
+    background: #ffd1dc;
+    transform: translateY(-1px);
+}
+
+.filter-btn.active {
+    background: #f8bbd0;
+}
