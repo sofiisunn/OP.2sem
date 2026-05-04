@@ -6,7 +6,7 @@ body {
     background-size: 20px 20px; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 50px;
 } 
@@ -87,7 +87,10 @@ li {
     border: 2px solid #000;
     border-left: 6px solid transparent;
     border-radius: 8px;
-    box-shadow: 4px 4px 0px #000;
+
+    box-shadow: 4px 4px 0px var(--task-color, #000);
+    transition: box-shadow 0.3s ease;
+
     padding: 15px 20px;
     margin-bottom: 15px;
     display: flex;
@@ -321,4 +324,11 @@ label {
 
 .filter-btn.active {
     background: #f8bbd0;
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px; 
 }

@@ -3,6 +3,7 @@
 import { asyncGenerator } from '../lib/async.js';
 import { Task } from '../lib/task.js';
 import { PriorityQueue } from '../lib/priority_queue.js'
+import { generator, iterator} from '../lib/generator.js'
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -15,8 +16,10 @@ const addSelected = document.getElementById('addSelected');
 const taskCount = document.getElementById('taskCount');
 const filter = document.getElementById('filter');
 const filterButtons = document.querySelectorAll('.filter-btn');
-let currentFilter = 'all';
+const logButton = document.getElementById('logButton');
 
+let currentFilter = 'all';
+const gen = generator();
 let selectedTask = null;
 let id = 1;
 let allTasks = new PriorityQueue();
@@ -69,7 +72,8 @@ function setLastId() {
 function addTask() {
     if (input.value.trim() === '') return;
     const priority = Number(document.getElementById('priority').value);
-    const task = new Task(id, input.value, null, priority);
+    const color = gen.next().value;
+    const task = new Task(id, input.value, color, priority);
     id++;
     allTasks.enqueue(task, priority);
     saveTask();
@@ -101,6 +105,7 @@ function renderTasks() {
         const li = document.createElement('li');
         li.dataset.id = task.taskId;
         li.classList.add("priority-" + task.priority);
+        li.style.setProperty('--task-color', task.color);
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -192,3 +197,5 @@ filterButtons.forEach(btn => {
         renderTasks();
     });
 });
+
+
