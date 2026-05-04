@@ -20,9 +20,50 @@ let currentFilter = 'all';
 let selectedTask = null;
 let id = 1;
 let allTasks = new PriorityQueue();
+loadTasks();
+setLastId();
+renderTasks();
 
 function updateTaskCount() {
     taskCount.textContent = 'Задач: ' + allTasks.order.length;
+}
+
+function saveTask() {
+    const data = allTasks.order.map(item => ({
+        taskId: item.value.taskId,
+        title: item.value.title,
+        color: item.value.color,
+        priority: item.value.priority,
+        done: item.value.done
+    }));
+
+    localStorage.setItem('tasks', JSON.stringify(data));
+}
+
+function loadTasks() {
+    const data = JSON.parse(localStorage.getItem('tasks'));
+    if (!data) return;
+    data.forEach(task => {
+        const t = new Task(task.taskId, task.title, task.color, task.priority);
+        t.done = task.done;
+        allTasks.enqueue(t, task.priority);
+    });
+
+}
+
+function setLastId() {
+    const data = JSON.parse(localStorage.getItem('tasks'));
+    if (!data || data.length === 0) {
+    id = 1;
+    return;
+    }
+    let maxId = 0;
+    data.forEach(t => {
+        if (t.taskId > maxId) {
+            maxId = t.taskId;
+        }
+    });
+    id = maxId + 1;
 }
 
 function addTask() {
@@ -31,44 +72,73 @@ function addTask() {
     const task = new Task(id, input.value, null, priority);
     id++;
     allTasks.enqueue(task, priority);
-    const li = document.createElement('li');
-    li.dataset.id = task.taskId;
-    li.classList.add("priority-" + priority);
-    updateTaskCount();
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('task-check');
-    li.appendChild(checkbox);
-    checkbox.addEventListener('change', () => {
-        const taskId = Number(li.dataset.id);
-        const found = allTasks.order.find(t => t.value.taskId === taskId);
-        if (found) {
-            found.value.done = checkbox.checked;
-        }
-        if(checkbox.checked) {
-            li.classList.add('done');
-        }
-        else {
-            li.classList.remove('done')
-        }
-    })
-
-    const span = document.createElement('span');
-    span.textContent = task.title;
-    li.appendChild(span);
-    
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = '\u00D7';
-    deleteButton.addEventListener('click', () => {
-        const taskId = Number(li.dataset.id);
-        allTasks.deleteById(taskId);
-        li.remove();
-        updateTaskCount();
-    })
-    li.appendChild(deleteButton);
-    list.appendChild(li);
+    saveTask();
     input.value = '';
+    renderTasks();
+}
+
+function shouldShow(task) {
+    if (currentFilter === 'done') return task.done;
+    if (currentFilter === 'active') return !task.done;
+    if (currentFilter === '1') return task.priority === 1;
+    if (currentFilter === '2') return task.priority === 2;
+    if (currentFilter === '3') return task.priority === 3;
+    return true;
+}
+
+function renderTasks() {
+    list.innerHTML = '';
+
+    const sortedTasks = [...allTasks.order].sort((a, b) => {
+        return b.value.priority - a.value.priority;
+    });
+
+    sortedTasks.forEach(item => {
+        const task = item.value;
+
+        if (!shouldShow(task)) return;
+
+        const li = document.createElement('li');
+        li.dataset.id = task.taskId;
+        li.classList.add("priority-" + task.priority);
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.classList.add('task-check');
+        checkbox.checked = task.done;
+
+        checkbox.addEventListener('change', () => {
+            task.done = checkbox.checked;
+            saveTask();
+
+            if (task.done) {
+                li.classList.add('done');
+            } else {
+                li.classList.remove('done');
+            }
+        });
+
+        const span = document.createElement('span');
+        span.textContent = task.title;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '×';
+
+        deleteButton.addEventListener('click', () => {
+            allTasks.deleteById(task.taskId);
+            saveTask();
+            renderTasks();
+            updateTaskCount();
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteButton);
+
+        list.appendChild(li);
+    });
+
+    updateTaskCount();
 }
 
 button.addEventListener('click', () => {
@@ -119,5 +189,6 @@ filterButtons.forEach(btn => {
         filterButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
+        renderTasks();
     });
 });
