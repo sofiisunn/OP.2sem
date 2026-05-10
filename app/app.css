@@ -343,3 +343,27 @@ label {
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    border: 2px solid #000;
+    border-radius: 50%;
+
+    background: #f8bbd0;
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 2px 2px 0px #000;
+}
+
+.close-btn:hover {
+    background: #f48fb1;
+}

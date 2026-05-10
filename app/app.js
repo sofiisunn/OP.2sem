@@ -21,6 +21,7 @@ const logButton = document.getElementById('logButton');
 const statsBox = document.getElementById('stats');
 const clearDone = document.getElementById('clearDone');
 const clearAll = document.getElementById('clearAll');
+const closePreview = document.getElementById('closePreview');
 
 let currentFilter = 'all';
 const gen = generator();
@@ -226,23 +227,43 @@ clearAll.addEventListener('click', () => {
     renderTasks();
 });
 
+function closePanel() {
+    previewPanel.classList.add('hidden');
+    overlay.classList.add('hidden');
+    selectedTask = null;
+}
+
+closePreview.addEventListener('click', closePanel);
+
+overlay.addEventListener('click', closePanel);
+
 exampleButton.addEventListener('click', async () => {
     previewPanel.classList.remove('hidden');
     overlay.classList.remove('hidden');
+
     previewList.innerHTML = '';
-    for await (const value of asyncGenerator()) {
-        const li = document.createElement('li');
-        li.textContent = value.taskId + ". " + value.title;
-        previewList.appendChild(li);
-        li.addEventListener('click', () => {
-            selectedTask = value;
-            document.querySelectorAll('#previewList li').forEach(el => {
-                el.style.background = '';
+
+    try {
+        for await (const value of asyncGenerator()) {
+            const li = document.createElement('li');
+            li.textContent = value.title;
+
+            previewList.appendChild(li);
+
+            li.addEventListener('click', () => {
+                selectedTask = value;
+
+                const items = previewList.querySelectorAll('li');
+                items.forEach(el => el.style.background = '');
+
+                li.style.background = '#ffd1dc';
             });
-            li.style.background = '#ffd1dc';
-        });
+        }
+    } catch (err) {
+        console.error("Stream error:", err);
+        previewList.innerHTML = "Помилка завантаження потоку";
     }
-}); 
+});
 
 addSelected.addEventListener('click', () => {
     if (!selectedTask) return;
