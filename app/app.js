@@ -4,6 +4,7 @@ import { asyncGenerator } from '../lib/async.js';
 import { Task } from '../lib/task.js';
 import { PriorityQueue } from '../lib/priority_queue.js'
 import { generator, iterator} from '../lib/generator.js'
+import { memoize } from '../lib/memoize.js'
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -17,18 +18,24 @@ const taskCount = document.getElementById('taskCount');
 const filter = document.getElementById('filter');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const logButton = document.getElementById('logButton');
+const statsBox = document.getElementById('stats');
+const clearDone = document.getElementById('clearDone');
+const clearAll = document.getElementById('clearAll');
 
 let currentFilter = 'all';
 const gen = generator();
 let selectedTask = null;
 let id = 1;
+let editingTaskId = null;
 let allTasks = new PriorityQueue();
+let stream = null;
 loadTasks();
 setLastId();
 renderTasks();
 
+
 function updateTaskCount() {
-    taskCount.textContent = 'Задач: ' + allTasks.order.length;
+    taskCount.textContent = 'Загальна кількість задач: ' + allTasks.order.length;
 }
 
 function saveTask() {
@@ -73,8 +80,15 @@ function addTask() {
     if (input.value.trim() === '') return;
     const priority = Number(document.getElementById('priority').value);
     const color = gen.next().value;
+
+    if (editingTaskId !== null) {
+        allTasks.deleteById(editingTaskId);
+        editingTaskId = null;
+    }
+
     const task = new Task(id, input.value, color, priority);
     id++;
+
     allTasks.enqueue(task, priority);
     saveTask();
     input.value = '';
@@ -107,6 +121,10 @@ function renderTasks() {
         li.classList.add("priority-" + task.priority);
         li.style.setProperty('--task-color', task.color);
 
+        if (task.done) {
+            li.classList.add('done');
+        }
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.classList.add('task-check');
@@ -116,11 +134,7 @@ function renderTasks() {
             task.done = checkbox.checked;
             saveTask();
 
-            if (task.done) {
-                li.classList.add('done');
-            } else {
-                li.classList.remove('done');
-            }
+            li.classList.toggle('done', task.done);
         });
 
         const span = document.createElement('span');
@@ -136,8 +150,43 @@ function renderTasks() {
             updateTaskCount();
         });
 
+        const editButton = document.createElement('button');
+        editButton.textContent = '✎';
+
+        editButton.addEventListener('click', () => {
+            if (li.querySelector('input.edit-input')) return;
+
+            const editInput = document.createElement('input');
+            editInput.value = task.title;
+            editInput.classList.add('edit-input');
+
+            li.replaceChild(editInput, span);
+            editInput.focus();
+
+            const finishEdit = () => {
+                const newValue = editInput.value.trim();
+
+                if (newValue !== '') {
+                    task.title = newValue;
+                    saveTask();
+                }
+
+                span.textContent = task.title;
+                li.replaceChild(span, editInput);
+            };
+
+            editInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    finishEdit();
+                }
+            });
+
+            editInput.addEventListener('blur', finishEdit);
+        });
+
         li.appendChild(checkbox);
         li.appendChild(span);
+        li.appendChild(editButton);
         li.appendChild(deleteButton);
 
         list.appendChild(li);
@@ -156,13 +205,34 @@ input.addEventListener('keydown', (e) => {
     }
 });
 
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderTasks();
+    });
+});
+
+clearDone.addEventListener('click', () => {  
+    allTasks.removeDone(); 
+    saveTask();  
+    renderTasks();  
+});
+
+clearAll.addEventListener('click', () => {
+    allTasks.order = [];
+    saveTask();
+    renderTasks();
+});
+
 exampleButton.addEventListener('click', async () => {
     previewPanel.classList.remove('hidden');
     overlay.classList.remove('hidden');
     previewList.innerHTML = '';
     for await (const value of asyncGenerator()) {
         const li = document.createElement('li');
-        li.textContent = value.taskId + ". " + value.title + " (" + value.color + ")";
+        li.textContent = value.taskId + ". " + value.title;
         previewList.appendChild(li);
         li.addEventListener('click', () => {
             selectedTask = value;
@@ -188,14 +258,4 @@ overlay.addEventListener('click', () => {
     previewPanel.classList.add('hidden');
     overlay.classList.add('hidden');
 });
-
-filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderTasks();
-    });
-});
-
 

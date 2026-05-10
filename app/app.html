@@ -12,7 +12,7 @@
     <div class="input">
         <input id="inputTask" placeholder="Введіть задачу...">
         <button id="addButton">Додати</button>
-        <button id="exampleButton">Побачити приклади задач</button>
+        <button id="exampleButton">Показати приклади задач</button>
     </div>
 
     <div class="selectPriority">
@@ -40,10 +40,18 @@
             <span id="taskCount">0 задач</span>
         </div> 
     </div> 
+
     <div id="overlay" class="hidden"></div>
+
     <div id="previewPanel" class="hidden">
+        <h3>Приклади задач</h3>
         <ul id="previewList"></ul>
         <button id="addSelected">Додати вибране завдання</button>
+    </div>
+
+    <div class="action-buttons">
+    <button class="filter-btn" id="clearDone">Очистити виконані</button>
+    <button class="filter-btn" id="clearAll">Очистити всі</button>
     </div>
 
     <script type="module" src="app.js"></script>

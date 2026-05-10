@@ -74,7 +74,6 @@ ul{
     min-height: 330px;
     max-height: 330px; 
     overflow-y: auto;
-    width: 600px;
     list-style: none;  
     padding: 20px;         
     margin: 20px 0;    
@@ -87,6 +86,7 @@ li {
     border: 2px solid #000;
     border-left: 6px solid transparent;
     border-radius: 8px;
+    gap: 8px;
 
     box-shadow: 4px 4px 0px var(--task-color, #000);
     transition: box-shadow 0.3s ease;
@@ -322,13 +322,24 @@ label {
     transform: translateY(-1px);
 }
 
-.filter-btn.active {
+.filter .filter-btn.active {
     background: #f8bbd0;
 }
 
-.side-panel {
+.edit-input {
+    flex-grow: 1;
+    font-family: inherit;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 6px;
+    padding: 5px;
+    outline: none;
+}
+
+.action-buttons {
     display: flex;
-    flex-direction: column;
     gap: 10px;
-    margin-left: 20px; 
+    margin-top: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
