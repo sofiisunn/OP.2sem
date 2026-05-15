@@ -5,6 +5,7 @@ import { Task } from '../lib/task.js';
 import { PriorityQueue } from '../lib/priority_queue.js'
 import { generator, iterator} from '../lib/generator.js'
 import { memoize } from '../lib/memoize.js'
+import { asyncMap } from '../lib/asyncMap.js'
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -19,6 +20,7 @@ const filter = document.getElementById('filter');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const logButton = document.getElementById('logButton');
 const statsBox = document.getElementById('stats');
+const allDone = document.getElementById('allDone');
 const clearDone = document.getElementById('clearDone');
 const clearAll = document.getElementById('clearAll');
 const closePreview = document.getElementById('closePreview');
@@ -28,6 +30,12 @@ const gen = generator();
 let selectedTask = null;
 let id = 1;
 let editingTaskId = null;
+let version = 0;
+
+const getCountText = memoize((count, v) => {
+    return 'Загальна кількість задач: ' + count;
+}, 10);
+
 let allTasks = new PriorityQueue();
 let stream = null;
 loadTasks();
@@ -36,7 +44,8 @@ renderTasks();
 
 
 function updateTaskCount() {
-    taskCount.textContent = 'Загальна кількість задач: ' + allTasks.order.length;
+    const text = getCountText(allTasks.order.length, version);
+    taskCount.textContent = text;
 }
 
 function saveTask() {
@@ -77,6 +86,18 @@ function setLastId() {
     id = maxId + 1;
 }
 
+async function markAllDone() {
+    const tasks = allTasks.order.map(x => x.value);
+
+    await asyncMap(tasks, (task) => {
+        task.done = true;
+        return task;
+    });
+
+    saveTask();
+    renderTasks();
+}
+
 function addTask() {
     if (input.value.trim() === '') return;
     const priority = Number(document.getElementById('priority').value);
@@ -91,6 +112,7 @@ function addTask() {
     id++;
 
     allTasks.enqueue(task, priority);
+    version++;
     saveTask();
     input.value = '';
     renderTasks();
@@ -215,14 +237,20 @@ filterButtons.forEach(btn => {
     });
 });
 
+allDone.addEventListener('click', () => {
+    markAllDone();
+});
+
 clearDone.addEventListener('click', () => {  
-    allTasks.removeDone(); 
+    allTasks.removeDone();
+    version++; 
     saveTask();  
     renderTasks();  
 });
 
 clearAll.addEventListener('click', () => {
     allTasks.order = [];
+    version++;
     saveTask();
     renderTasks();
 });
