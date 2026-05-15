@@ -6,6 +6,7 @@ import { PriorityQueue } from '../lib/priority_queue.js'
 import { generator, iterator} from '../lib/generator.js'
 import { memoize } from '../lib/memoize.js'
 import { asyncMap } from '../lib/asyncMap.js'
+import { EventEmitter } from '../lib/eventEmitter.js'
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -35,6 +36,27 @@ let version = 0;
 const getCountText = memoize((count, v) => {
     return 'Загальна кількість задач: ' + count;
 }, 10);
+
+const bus = new EventEmitter();
+
+bus.subscribe('task:added', () => {
+    renderTasks();
+    updateTaskCount();
+});
+
+bus.subscribe('task:deleted', () => {
+    renderTasks();
+    updateTaskCount();
+});
+
+bus.subscribe('task:completed', () => {
+    renderTasks();
+    updateTaskCount();
+});
+
+bus.subscribe('error', (err) => {
+    console.error('Bus error:', err);
+});
 
 let allTasks = new PriorityQueue();
 let stream = null;
@@ -114,6 +136,7 @@ function addTask() {
     allTasks.enqueue(task, priority);
     version++;
     saveTask();
+    bus.emit('task:added', task);
     input.value = '';
     renderTasks();
 }
@@ -156,6 +179,7 @@ function renderTasks() {
         checkbox.addEventListener('change', () => {
             task.done = checkbox.checked;
             saveTask();
+            bus.emit('task:completed', task);
 
             li.classList.toggle('done', task.done);
         });
@@ -169,8 +193,7 @@ function renderTasks() {
         deleteButton.addEventListener('click', () => {
             allTasks.deleteById(task.taskId);
             saveTask();
-            renderTasks();
-            updateTaskCount();
+            bus.emit('task:deleted', task);
         });
 
         const editButton = document.createElement('button');
