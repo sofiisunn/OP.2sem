@@ -7,6 +7,9 @@ import { generator, iterator} from '../lib/generator.js'
 import { memoize } from '../lib/memoize.js'
 import { asyncMap } from '../lib/asyncMap.js'
 import { EventEmitter } from '../lib/eventEmitter.js'
+import { BaseHttpClient } from '../lib/baseHttpClient.js';
+import { AuthProxy } from '../lib/authProxy.js';
+import { GitHubService } from '../services/gitHubService.js';
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -64,6 +67,14 @@ loadTasks();
 setLastId();
 renderTasks();
 
+function getToken() {
+    return localStorage.getItem('token') || 'demo-token';
+}
+
+const client = new BaseHttpClient();
+const token = getToken();
+const authClient = new AuthProxy(client, token, 'jwt');
+const gitHubService = new GitHubService(authClient);
 
 function updateTaskCount() {
     const text = getCountText(allTasks.order.length, version);
