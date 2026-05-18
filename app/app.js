@@ -10,6 +10,7 @@ import { EventEmitter } from '../lib/eventEmitter.js'
 import { BaseHttpClient } from '../lib/baseHttpClient.js';
 import { AuthProxy } from '../lib/authProxy.js';
 import { GitHubService } from '../services/gitHubService.js';
+import { log } from '../lib/logger.js';
 
 const input = document.getElementById('inputTask');
 const button = document.getElementById('addButton');
@@ -133,7 +134,64 @@ async function markAllDone() {
     renderTasks();
 }
 
-function addTask() {
+function displayLogPanel(logObj) {
+    const panel = document.getElementById('logPanel');
+    if (!panel) return;
+
+    panel.innerHTML = '';
+
+    const lines = [];
+
+    const timestamp = new Date(logObj.timestamp).toLocaleString();
+
+    let result = '';
+
+    if (logObj.result === undefined || logObj.result === null) {
+        result = 'н/д';
+    } else {
+        if (typeof logObj.result === 'object') {
+            result = JSON.stringify(logObj.result);
+        } else {
+            result = "" + logObj.result;
+        }
+    }
+
+    lines.push("[" + logObj.level + "] " + timestamp);
+    lines.push("Результат: " + result);
+
+    let timeText = '';
+
+    if (logObj.time) {
+        timeText = logObj.time.toFixed(4) + " мс";
+    } else {
+        timeText = "н/д";
+    }
+
+    lines.push("Час виконання: " + timeText);
+
+    if (logObj.args) {
+        lines.push("Аргументи: " + JSON.stringify(logObj.args));
+    }
+
+    if (logObj.error) {
+        let errText = '';
+
+        if (logObj.error.message) {
+            errText = logObj.error.message;
+        } else {
+            errText = "" + logObj.error;
+        }
+
+        lines.push("Помилка: " + errText);
+    }
+
+    const logContainer = document.createElement('div');
+    logContainer.textContent = lines.join("\n");
+
+    panel.appendChild(logContainer);
+}
+
+const addTask = log('DEBUG', displayLogPanel)(function() {
     if (input.value.trim() === '') return;
     const priority = Number(document.getElementById('priority').value);
     const color = gen.next().value;
@@ -152,7 +210,7 @@ function addTask() {
     bus.emit('task:added', task);
     input.value = '';
     renderTasks();
-}
+})
 
 function shouldShow(task) {
     if (currentFilter === 'done') return task.done;
@@ -366,4 +424,4 @@ authTestBtn.addEventListener('click', async () => {
     catch (e) {
         authResult.innerHTML = 'Помилка завантаження';
     }
-});
+})
