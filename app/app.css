@@ -367,3 +367,18 @@ label {
 .close-btn:hover {
     background: #f48fb1;
 }
+
+#authResult.card {
+    background: #ffffff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    box-shadow: 6px 6px 0px #000;
+    width: 100%;
+    max-width: 650px;
+    margin-top: 25px;
+    padding: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    text-align: center;
+    color: #000;
+}

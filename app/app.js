@@ -20,7 +20,6 @@ const overlay = document.getElementById('overlay');
 const list = document.getElementById('taskList');
 const addSelected = document.getElementById('addSelected');
 const taskCount = document.getElementById('taskCount');
-const filter = document.getElementById('filter');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const logButton = document.getElementById('logButton');
 const statsBox = document.getElementById('stats');
@@ -28,6 +27,8 @@ const allDone = document.getElementById('allDone');
 const clearDone = document.getElementById('clearDone');
 const clearAll = document.getElementById('clearAll');
 const closePreview = document.getElementById('closePreview');
+const authTestBtn = document.getElementById('authTest');
+const authResult = document.getElementById('authResult');
 
 let currentFilter = 'all';
 const gen = generator();
@@ -73,7 +74,8 @@ function getToken() {
 
 const client = new BaseHttpClient();
 const token = getToken();
-const authClient = new AuthProxy(client, token, 'jwt');
+
+const authClient = new AuthProxy(client, token);
 const gitHubService = new GitHubService(authClient);
 
 function updateTaskCount() {
@@ -342,3 +344,26 @@ overlay.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
+authTestBtn.addEventListener('click', async () => {
+    authResult.classList.remove('hidden');
+    authResult.innerHTML = 'Завантаження...';
+
+    try {
+        authClient.setMethod('jwt');
+        const jwtUser = await gitHubService.getUser('sofiisunn');
+
+        authClient.setMethod('apiKey');
+        const apiUser = await gitHubService.getUser('sofiisunn');
+
+        authClient.setMethod('oauth');
+        const oauthUser = await gitHubService.getUser('sofiisunn');
+
+        authResult.innerHTML =
+        jwtUser.login + ' | ' +
+        apiUser.login + ' | ' +
+        oauthUser.login;
+    }
+    catch (e) {
+        authResult.innerHTML = 'Помилка завантаження';
+    }
+});
