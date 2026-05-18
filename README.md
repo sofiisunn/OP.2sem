@@ -3,7 +3,6 @@
 Project 2 sem
 ## Project structure
 lib/ - core library implementation
-example/ - example of using;
 package.json - project configuration;
 README.md - project documentation
 ## Usage
