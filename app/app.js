@@ -335,11 +335,31 @@ function renderTasks() {
             editInput.addEventListener('blur', finishEdit);
         });
 
+             const prioritySelect = document.createElement('select');
+            prioritySelect.classList.add('priority-select-inline');
+            [1, 2, 3].forEach(p => {
+                const option = document.createElement('option');
+                option.value = p;
+                option.textContent = p;
+                if (p === task.priority) option.selected = true;
+                prioritySelect.appendChild(option);
+ });
+
+prioritySelect.addEventListener('change', () => {
+    const newPriority = Number(prioritySelect.value);
+    allTasks.deleteById(task.taskId);
+    task.priority = newPriority;
+    allTasks.enqueue(task, newPriority);
+    saveTask();
+    renderTasks();
+});
+
         li.appendChild(checkbox);
         li.appendChild(span);
+        li.appendChild(prioritySelect);
         li.appendChild(editButton);
         li.appendChild(deleteButton);
-
+        
         list.appendChild(li);
     });
 
