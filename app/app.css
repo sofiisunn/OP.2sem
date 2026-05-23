@@ -402,3 +402,13 @@ label {
     overflow-y: auto;
 }
 
+.priority-select-inline {
+    width: 45px;
+    padding: 4px;
+    border-radius: 8px;
+    border: 2px solid #000;
+    background: #fff0f5;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
