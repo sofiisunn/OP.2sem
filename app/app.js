@@ -237,10 +237,49 @@ function renderTasks() {
         li.dataset.id = task.taskId;
         li.classList.add("priority-" + task.priority);
         li.style.setProperty('--task-color', task.color);
+        li.draggable = true;
 
         if (task.done) {
             li.classList.add('done');
         }
+
+        // --- Drag & Drop ---
+        li.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', task.taskId);
+            li.style.opacity = '0.4';
+        });
+
+        li.addEventListener('dragend', () => {
+            li.style.opacity = '1';
+        });
+
+        li.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            li.style.borderTop = '3px solid #f48fb1';
+        });
+
+        li.addEventListener('dragleave', () => {
+            li.style.borderTop = '';
+        });
+
+        li.addEventListener('drop', (e) => {
+            e.preventDefault();
+            li.style.borderTop = '';
+            const draggedId = Number(e.dataTransfer.getData('text/plain'));
+            const targetId = task.taskId;
+            if (draggedId === targetId) return;
+
+            const draggedIndex = allTasks.order.findIndex(x => x.value.taskId === draggedId);
+            const targetIndex = allTasks.order.findIndex(x => x.value.taskId === targetId);
+
+            if (draggedIndex === -1 || targetIndex === -1) return;
+
+            const [draggedItem] = allTasks.order.splice(draggedIndex, 1);
+            allTasks.order.splice(targetIndex, 0, draggedItem);
+
+            saveTask();
+            renderTasks();
+        });
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -251,7 +290,6 @@ function renderTasks() {
             task.done = checkbox.checked;
             saveTask();
             bus.emit('task:completed', task);
-
             li.classList.toggle('done', task.done);
         });
 
@@ -282,20 +320,16 @@ function renderTasks() {
 
             const finishEdit = () => {
                 const newValue = editInput.value.trim();
-
                 if (newValue !== '') {
                     task.title = newValue;
                     saveTask();
                 }
-
                 span.textContent = task.title;
                 li.replaceChild(span, editInput);
             };
 
             editInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    finishEdit();
-                }
+                if (e.key === 'Enter') finishEdit();
             });
 
             editInput.addEventListener('blur', finishEdit);
